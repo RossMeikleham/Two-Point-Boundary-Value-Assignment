@@ -1,0 +1,57 @@
+\documentclass[fleqn]{report} 
+\usepackage{amsmath, amsfonts, graphicx, adjustbox, mcode}
+\begin{document}
+\title{Numerical Methods 4H Assignment 2 - A two-point boundary value problem}
+\author{1107023m}
+\date{December 2014}
+\maketitle
+
+\section{Question 1}
+We use a uniform partition of [0,1] by (N + 1) evenly spaced nodes \\
+$0 = x_0 < x_1 < \dots < x_n = 1$ where $x_i = i/N$ then $h = 1/N$ and $x_i = hi.$\\
+Let $u_i$ denote $u(x_i)$
+
+\section{Question 2}
+
+At each interior point of [0,1] we have the following formulas:
+\begin{equation}
+    u^{\prime\prime}(x_i) = \frac{u_{i+1} - 2u_i + u_{i-1}}{h^2} + O(h^2) \\
+\end{equation}
+\begin{equation}
+    u^{\prime}(x_i) = \frac{u_{i+1} - u_{i-1}}{2h} + O(h^2)
+\end{equation}
+\\
+The finite difference approximation for $u(x)$ is now obtained by enforcing the
+original equation at each interior node of [0,1] that is:
+
+\begin{equation} 
+\begin{split}
+&\frac{u_{i+1} - 2u_i + u_{i-1}}{h^2} = u_isin(2 \pi x_i) - exp(u_i)\frac{u_{i+1} - u_{i-1}}{2h}\\\\
+&\iff  2u_{i+1} - 4u_i + 2u_{i-1} - 2h^2u_isin(2 \pi x_i) + hexp(u_i)(u_{i+1} - u_{i-1}) = 0\\\\
+&\iff u_{i+1}(2 + hexp(u_i)) - u_i(4 + 2h^2sin(2 \pi x_i)) + u_{i-1}(2 - hexp(u_i)) = 0
+\end{split}
+\end{equation}
+for $i \in [1, N - 1]$
+
+\section{Question 3}
+
+The $O(h^2)$ accurate backwards finite difference formula for $u^{\prime}$ is:
+\begin{equation}
+\frac{u_{i-2} - 4u_{i-1} + 3u_i}{2h} = u^{\prime}(x_i) + O(h^2)
+\end{equation}
+\\
+Substitute this into the boundary equation $u^{\prime}(1) + u^3(1) = 0$:
+\begin{equation}
+\begin{split}
+&u^{\prime}(1) + u^3(1) = 0\\\\
+&\iff u^{\prime}(x_N) + u_N^3 = 0\\\\
+&\iff \frac{u_{N-2} - 4u_{N-1} + 3u_N}{2h} + u_N^3 = 0\\
+&\implies u_N(2hu_N^2 + 3) - 4u_{N-1} + u_{N-2} = 0
+\end{split}
+\end{equation}
+\\
+which is the difference equation for node $x_N$\\\\
+The difference equation for node $x_0$ is simply $u_0 = 1$
+
+\section{Question 4}
+\end{document}
