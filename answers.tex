@@ -56,32 +56,53 @@ The difference equation for node $x_0$ is simply $u_0 = 1$
 
 \section{Question 4}
 
-Let F(u) = 0 be a system of N - 1 equations in N - 1 unknowns where
+Let F(u) = 0 be a system of N equations where
 \begin{equation}
-\begin{split}
+\begin{split} 
 &F_1 = u_{2}(2 + hexp(u_1)) - 4u_1 + (2 - hexp(u_1)) - 2h^2\mu sin(2 \pi x_1) = 0  \\
 &\vdots \ \ = \ \ \ \ \ \ \                   \vdots\\
 &F_i =  u_{i+1}(2 + hexp(u_i)) - 4u_i + u_{i-1}(2 - hexp(u_i)) - 2h^2\mu sin(2 \pi x_i) = 0  \\
 &\vdots \ \ = \ \ \ \ \ \ \                   \vdots\\
-    &F_{n-1} =  u_{n}(2 + hexp(u_{n-1})) - 4u_{n-1} + u_{n-2}(2 - hexp(u_{n-1})) - 2h^2\mu sin(2 \pi x_{n-1}) = 0 \\
+    &F_{N-1} =  u_{N}(2 + hexp(u_{N-1})) - 4u_{N-1} + u_{N-2}(2 - hexp(u_{N-1})) - 2h^2\mu sin(2 \pi x_{N-1}) = 0\\
+&F_N = u_N(2hu^2_N + 3) - 4u_{N-1} + U_{N-2} = 0\\
     \end{split}
 \end{equation}
 \\
+
+Then applying the ficticious node procedure at node i = N, this gives:
+\begin{equation}
+\frac{u_{N+1} - 2u_N + u_{N-1}}{h^2} + exp(u_i)\frac{u_{N+1} - u_{N-1}}{2h} = \mu sin(2 \pi x_N)\\\\
+\end{equation}
+
+Centred difference approximation of the derivative boundary condition gives:
+\begin{equation}
+\frac{u_{N+1} - u_{N-1}}{2h} + u^3_N = 0\\\\
+\end{equation}
+
+Elimination of $U_{N+1}$ gives :
+\begin{equation}
+\begin{split}
+&\frac{u_{N+1} - 2u_N + u_{N-1}}{h^2} - exp(u_i)u^3_N = \mu sin(2 \pi x_N)\\\\
+&\iff \frac{2u_{N+1} - 4u_N + 2u_{N-1}}{2h^2} - exp(u_N)u^3_N = \mu sin(2 \pi x_N)\\\\
+&\iff \frac{2u_{N-1}}{2h^2} - \frac{2u^3_N}{h} + \frac{- 4u_N + 2u_{N-1}}{2h^2} - exp(u_N)u^3_N = \mu sin(2 \pi x_N)\\\\
+&\iff \frac{2u_{N-1}}{h^2} - u_{N}(exp(u_N)u^2_N + \frac{2}{h^2}) - \mu sin(2 \pi x_N) = 0\\\\
+\end{split}
+\end{equation}
+
+which gives us our new equation for $F_N$
+
 Then calculating the Jacobian matrix $J$ where entry $J_{ij} = \frac{\partial F_i}{\partial u_j}$:
-%\begin{bmatrix}
-%a& b \\
-%c& d 
-%\end{bmatrix}
 \[
  J=
-\left[ {\begin{array}{ccccccc}
--4 & 2 +hexp(u_1) & 0 & 0 & \hdots & \hdots & 0 \\
-2 - hexp(u_2) & -4 & 2 + hexp(u_2) & 0 & \hdots & \hdots & 0 \\ 
-0 & 2 - hexp(u_3) & -4 & 2 + hexp(u_3) & 0 & \hdots & \hdots \\
-\vdots & \vdots & \ddots & \ddots & \ddots & \ddots & \hdots \\
-\vdots & \vdots & \ddots & 2 - hexp(u_i) & -4  & 2 + hexp(u_i) & \hdots \\
-\vdots & \vdots & \ddots & \ddots & \ddots & \ddots & \hdots \\
-0 & \hdots & \hdots & \hdots & 0 & 2 - hexp(u_{n-1}) & -4  \\
+\left[ {\begin{array}{cccccccc}
+-4 & 2 +hexp(u_1) & 0 & 0 & \hdots & \hdots & \hdots & 0 \\
+2 - hexp(u_2) & -4 & 2 + hexp(u_2) & 0 & \hdots & \hdots & \hdots & 0 \\ 
+0 & 2 - hexp(u_3) & -4 & 2 + hexp(u_3) & 0 & \hdots & \hdots & \hdots \\
+\vdots & \vdots & \ddots & \ddots & \ddots & \ddots & \hdots & \hdots\\
+\vdots & \vdots & \ddots & 2 - hexp(u_i) & -4  & 2 + hexp(u_i) & \hdots & \hdots \\
+\vdots & \vdots & \ddots & \ddots & \ddots & \ddots & \hdots & \hdots \\
+0 & \hdots & \hdots & \hdots & 0 & 2 - hexp(u_{n-1}) & -4 & 0 \\
+0 & \hdots & \hdots & \hdots & \hdots & 0 & \frac{2}{h^2} & - \frac{2}{h^2} - u_N^2exp(u_N)(u_N + 3) \\
   \end{array} } \right]
 \]
 
