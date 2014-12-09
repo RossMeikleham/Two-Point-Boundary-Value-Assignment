@@ -68,19 +68,24 @@ Let F(u) = 0 be a system of N equations where
     \end{split}
 \end{equation}
 \\
+\\
+Then calculating the Jacobian matrix $J$ where entry $J_{ij} = \frac{\partial F_i}{\partial u_j}$:\\
 
+Define the following equations for i $\in$ $[2, n-1]$:\\\\
+\indent $L_i = \frac{\partial F_i}{\partial u_{i-1}} = 2 - hexp(u_i)$\\ 
+\indent $U_i = \frac{\partial F_i}{\partial u_{i+1}} = 2 + hexp(u_i)$\\
+\indent $D_i = \frac{\partial F_i}{\partial u_i} =  (u_{i+1} - u_{i-1})hexp(u_i) -4$\\
 
-Then calculating the Jacobian matrix $J$ where entry $J_{ij} = \frac{\partial F_i}{\partial u_j}$:
 \[
  J=
 \left[ {\begin{array}{cccccccc}
--4 & 2 +hexp(u_1) & 0 & 0 & \hdots & \hdots & \hdots & 0 \\
-2 - hexp(u_2) & -4 & 2 + hexp(u_2) & 0 & \hdots & \hdots & \hdots & 0 \\ 
-0 & 2 - hexp(u_3) & -4 & 2 + hexp(u_3) & 0 & \hdots & \hdots & \hdots \\
+(u_2 - 1)hexp(u_1) - 4 & 2 +hexp(u_1) & 0 & 0 & \hdots & \hdots & \hdots & 0 \\
+L_2 & D_2 & U_2 & 0 & \hdots & \hdots & \hdots & 0 \\ 
+0 & L_3 & D_3 & U_3 & 0 & \hdots & \hdots & \hdots \\
 \vdots & \vdots & \ddots & \ddots & \ddots & \ddots & \hdots & \hdots\\
-\vdots & \vdots & \ddots & 2 - hexp(u_i) & -4  & 2 + hexp(u_i) & \hdots & \hdots \\
+\vdots & \vdots & \ddots & L_i & D_i  & U_i & \hdots & \hdots \\
 \vdots & \vdots & \ddots & \ddots & \ddots & \ddots & \hdots & \hdots \\
-0 & \hdots & \hdots & \hdots & 0 & 2 - hexp(u_{n-1}) & -4 & 0 \\
+0 & \hdots & \hdots & \hdots & 0 & L_{n-1} & D_{n-1} & U_{n-1} \\
 0 & \hdots & \hdots & \hdots & \hdots & 1 & -4 & 6hu^2_n + 3\\
   \end{array} } \right]
 \]

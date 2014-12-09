@@ -2,13 +2,13 @@
 % nonlinear BVP with Dirichlet and Robin BCs
 
 % Some physical parameter.
-mu= 10;
+mu = 10;
 
 % Define the interval over which solution is calculated.
 a= 0; b= 1;
 
 % Define N.
-N= 50;
+N= 250;
 
 % Define the grid spacing.
 h=(b-a)/N;
@@ -47,16 +47,16 @@ while (norm(F)>tol )
 
     %% Define the Jacobian J.
     % First row corresponds to BC at x=0.
-    J(1,:) = horzcat(-4, 2 + (h * exp(U(1))), zeros(1, N-2));
+    J(1,:) = horzcat(((U(2) - 1) * h * exp(U(1))) - 4, 2 + (h * exp(U(1))), zeros(1, N-2));
 
     % Last row corresponds to BC at x=1.
     %J(N,:) = horzcat(zeros(1, N-2),  2/(h^2), -2/(h^2) - (U(N)^2) * exp(U(N))*(U(N) + 3));
-    J(N,:) = horzcat(zeros(1, N-3), 1, -4, (6 * h * U(N)^2) + 3); 
+    J(N,:) = horzcat(zeros(1, N-3), 1, -4, (4 * h * U(N)^2) + 3); 
 
     % Intermediate rows correspond to F(i)=...
     for i=2:(N-1)
         % Diagonal entries.
-        J(i,i)= -4;
+        J(i,i)= ((U(i+1) - U(i-1)) * h * exp(U(i))) - 4;
         % Left diagonal entries
         J(i, i-1) = 2 - (h * exp(U(i)));
         % Right diagonal entries
@@ -74,6 +74,7 @@ while (norm(F)>tol )
 end
 
 %% Insert your plot commands here.
-plot(x, SOL(1));
+%plot(x, SOL(1));
 SOL
+%sprintf('%0.8f\n',SOL)
 
