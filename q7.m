@@ -1,14 +1,35 @@
+function q7
+
+n = 13;
+start = 2;
+res= zeros(1, n - start);
+vk = zeros(1, n);
+
+% Compute all V(2^k) values
+for k=2:n 
+    vk(k) = v(2^k); 
+    display(k);
+end
+
+for k = (start+2):n
+    res(k-start-1) = abs(vk(k-1) - vk(k-2)) / abs(vk(k) - vk(k-1));
+end
+
+display(res);
+sprintf('%0.8f\n', res)
+
+plot((start+2:n), res);
+
+end
+
+function res = v(N)
 % Code to calculate the solution to a 
 % nonlinear BVP with Dirichlet and Robin BCs
-
-% Some physical parameter.
-mu = 10;
 
 % Define the interval over which solution is calculated.
 a= 0; b= 1;
 
-% Define N.
-N= 200;
+mu = 10;
 
 % Define the grid spacing.
 h=(b-a)/N;
@@ -18,27 +39,23 @@ x = reshape(linspace(a+h,b,N),N,1);
 
 % Define an initial guess for the solution 
 % of the BVP (make sure it is a column vector)
-U= zeros(N, 1);
+U= ones(N, 1);
 
-% Define a tolerance for the termination of Newton-Raphson.
-tol= 10^(-8); 
 % Ensure that F is such that at least one iteration is done.
 F=ones(N,1);
-J=zeros(N,N);
+J=sparse(N,N);
 
-% Store the initial guess in SOL.
-SOL= U;
-
-% Loop while the norm(F) is greater than tol.
-while (norm(F)>tol )
+% Loop 10 times
+for j = 1:10
 
     %% Define F(u).
     % Boundary conditions.
-     F(N) = (U(N) * ((2 * h * (U(N)^2)) + 3)) - (4 * (U(N-1))) + U(N-2);
+    F(N) = (U(N) * ((2 * h * (U(N)^2)) + 3)) - (4 * (U(N-1))) + U(N-2);
 
     % Finite difference approximation to ODE at interior nodes.
     F(1) = (U(2) * (2 + h * exp(U(1)))) - (4 * U(1)) + (2 - (h * exp(U(1))));
     F(1) = F(1) - (2 * (h^2) * mu * sin(2 * pi * x(1)));
+
     for i=2:N-1
         F(i)= (U(i+1) * (2 + h * exp(U(i)))) - (4 * U(i)) + U(i-1)*(2 - h * exp(U(i)));
         F(i) = F(i) - (2 * (h^2) * mu * sin(2 * pi * x(i)));
@@ -49,7 +66,6 @@ while (norm(F)>tol )
     J(1,:) = horzcat(((U(2) - 1) * h * exp(U(1))) - 4, 2 + (h * exp(U(1))), zeros(1, N-2));
 
     % Last row corresponds to BC at x=1.
-    %J(N,:) = horzcat(zeros(1, N-2),  2/(h^2), -2/(h^2) - (U(N)^2) * exp(U(N))*(U(N) + 3));
     J(N,:) = horzcat(zeros(1, N-3), 1, -4, (4 * h * U(N)^2) + 3); 
 
     % Intermediate rows correspond to F(i)=...
@@ -63,28 +79,12 @@ while (norm(F)>tol )
     end
     
     %% Having defined F and J, update the approximate solution to
-    % the difference equations.
-    
-    U=U-J\F;
+    % the difference equations.  
+    U=U-sparse(J)\F;
 
-    %% Store the new approximation.
-    SOL= [SOL,U];
-    size(SOL)
 end
 
-%% Insert your plot commands here.
-plots = []
-labels = []
-sz = size(SOL);
-for i  = 1:(sz(2))    
-    if (i > 4)
-        p = plot(x, exp(SOL(:,i)));
-        %text(0.5, SOL(i + (N/2) - 1), strcat('iteration  ', int2str(iterNo)));
-        plots = [plots, p];
-        %labels = [labels, strcat('iteration  ', int2str((i - 1)/N + 1))];
-        hold all;
-    end
-end
-%legend(plots, labels);
-hold off
+% Return U at X =1/2
+res = U(N/2);
 
+end
