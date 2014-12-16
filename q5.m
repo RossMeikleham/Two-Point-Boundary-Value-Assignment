@@ -69,17 +69,13 @@ while (norm(F)>tol )
 
     %% Store the new approximation.
     SOL= [SOL,U];
-    size(SOL)
 end
 
 %% Insert your plot commands here.
-plots = []
-labels = []
 sz = size(SOL);
 for i  = 1:(sz(2))    
         p = plot(x, SOL(:,i));
         text(0.5, SOL(N/2,i), strcat('iteration  ', int2str(i - 1)));
-        plots = [plots, p];
         hold all;
 end
 title('Graph of itererations of finite discretisation for 250 nodes')
