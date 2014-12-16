@@ -1,4 +1,4 @@
-n = 51
+n = 51;
 mus = linspace(-20, 30, n);
 vals = bvp(mus(1));
 for i = 2:n
@@ -6,9 +6,6 @@ for i = 2:n
 end
 
 hold on
-
-vals(:,2)
-vals(:,3)
 
 %u(1/4)
 plot(mus, vals(:,1));
@@ -19,5 +16,9 @@ text(mus(1) + 2, vals(1,2) + 0.2, 'u(1/2)');
 %u(3/4)
 plot(mus, vals(:,3));
 text(mus(1) + 2, vals(1,3) + 0.3, 'u(3/4)');
+
+title('Graph of dicretisation values against mu')
+xlabel('mu'); % x-axis label
+ylabel('discretisation values'); % y-axis label
 
 hold off

@@ -2,23 +2,29 @@ function q7
 
 n = 13;
 start = 2;
-res= zeros(1, n - start);
+res= zeros(1, n - start - 1);
 vk = zeros(1, n);
 
 % Compute all V(2^k) values
 for k=2:n 
     vk(k) = v(2^k); 
-    display(k);
 end
 
+% Compute ratios
 for k = (start+2):n
     res(k-start-1) = abs(vk(k-1) - vk(k-2)) / abs(vk(k) - vk(k-1));
 end
 
-display(res);
-sprintf('%0.8f\n', res)
-
+% Plot points
 plot((start+2:n), res);
+
+% Graph details
+title('Graph of convergence of the finite-difference discretisation method')
+xlabel('k'); % x-axis label
+ylabel('|v(2^(k-1)) - v(2^(k-2))|/ |v(2^k) - v(2^(k-1))|'); % y-axis label
+text(2.2 + start, res(1), strcat('k = 4, ratio =', num2str(res(1))));
+text(4 + start, res(4) + 0.02, strcat('k = 7, ratio =', num2str(res(4))));
+text(8.7 + start, res(10) - 0.01, strcat('k = 13, ratio =', num2str(res(10))));
 
 end
 

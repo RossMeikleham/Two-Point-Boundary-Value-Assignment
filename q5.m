@@ -8,7 +8,7 @@ mu = 10;
 a= 0; b= 1;
 
 % Define N.
-N= 200;
+N= 250;
 
 % Define the grid spacing.
 h=(b-a)/N;
@@ -77,14 +77,12 @@ plots = []
 labels = []
 sz = size(SOL);
 for i  = 1:(sz(2))    
-    if (i > 4)
-        p = plot(x, exp(SOL(:,i)));
-        %text(0.5, SOL(i + (N/2) - 1), strcat('iteration  ', int2str(iterNo)));
+        p = plot(x, SOL(:,i));
+        text(0.5, SOL(N/2,i), strcat('iteration  ', int2str(i - 1)));
         plots = [plots, p];
-        %labels = [labels, strcat('iteration  ', int2str((i - 1)/N + 1))];
         hold all;
-    end
 end
-%legend(plots, labels);
+title('Graph of itererations of finite discretisation for 250 nodes')
+xlabel('x'); % x-axis label
+ylabel('u(x)'); % y-axis label
 hold off
-
